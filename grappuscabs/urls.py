@@ -15,9 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
 from records import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('createDriver/', views.driverCreation.as_view()),
+    path('createCustomer/', views.customerCreation.as_view()),
+    path('driver/', views.driver.as_view()),
+    path('customer/', views.customer.as_view()),
+    url(r'^customer/(?P<id>[0-9]+)/$', views.customer.as_view()),
 ]
