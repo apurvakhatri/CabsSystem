@@ -24,5 +24,6 @@ urlpatterns = [
     path('createCustomer/', views.customerCreation.as_view()),
     path('driver/', views.driver.as_view()),
     path('customer/', views.customer.as_view()),
-    url(r'^customer/(?P<id>[0-9]+)/$', views.customer.as_view()),
+    url(r'^customer/(?P<id>[^/]+)/$', views.customer.as_view()),
+    url(r'^book/(?P<id>[^/]+)/(?P<lat>[^/]+)/(?P<lon>[^/]+)/$', views.book.as_view()),
 ]

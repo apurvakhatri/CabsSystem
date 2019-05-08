@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'grappuscabs.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'grappuscabs3',
+        'NAME': 'grappuscabs8',
         'USER': 'apurvakhatri',
         'PASSWORD': '',
         'HOST': 'localhost',
