@@ -60,7 +60,7 @@ class book(APIView):
         print("table1 is\n")
         print(table1)
         if len(table1)==0:
-            return HttpResponse('All drivers are busy due to high demand', status=400)
+            return Response('All drivers are busy due to high demand', status=400)
         for i in table1:
             distance=book.getDistanceFromLatLonInKm(lat1, lon1, i["latitude"], i["longitude"])
             print("Distance is & id is\n")
@@ -75,7 +75,7 @@ class book(APIView):
         print("no_of_elements in table2 are:")
         print(len(table2))
         if(len(table2)==0):
-            return HttpResponse('No driver in the region', status=400)
+            return Response('No driver in the region', status=400)
         lower_bound=5
         while(len(table3)==0):
             lower_bound=lower_bound-0.5
@@ -91,6 +91,8 @@ class book(APIView):
                 min_distance=distance
                 local_best=i
         found=0
+        print("local_best is\n")
+        print(local_best)
         for i in table3:
             if(i!=local_best):
                 if(local_best["distance"]<i["distance"]<local_best["distance"]+2.0):
@@ -105,6 +107,7 @@ class book(APIView):
             print(local_best)
         else:
             print("global_best is\n")
+            print(global_best)
             return Response(global_best, status=200)
 
 class driverCreation(APIView):
@@ -118,23 +121,23 @@ class driverCreation(APIView):
             request.data["user"]=serializer1Obj.id
             #request.data gets updated and is passed into the serializer2
             if serializer2.is_valid():
-                # print(serializer1.validated_data)
-                # print("\n")
-                # print(serializer2.validated_data)
-                # print("\n")
-                # print("reques.data now is\n")
-                # print(request.data)
+                print(serializer1.validated_data)
+                print("\n")
+                print(serializer2.validated_data)
+                print("\n")
+                print("reques.data now is\n")
+                print(request.data)
                 serializer2.save()
-                return HttpResponse('Object successfully created', status=200)
+                return Response('Object successfully created', status=200)
             else:
-                # print("serializers2 in invalid")
+                print("serializers2 in invalid")
                 #Because serializer2 is invalid, we delete the instance of
                 #serializer1 in the database
                 serializer1Obj.delete();
-                return HttpResponse('Driver details are Invalid', status=400)
+                return Response('Driver details are Invalid', status=400)
         else:
-            # print("serializers1 in invalid")
-            return HttpResponse('User details are Invalid', status=400)
+            print("serializers1 in invalid")
+            return Response('User details are Invalid', status=400)
 
 class customerCreation(APIView):
     def post(self, request):
@@ -151,14 +154,14 @@ class customerCreation(APIView):
                 # print("reques.data now is\n")
                 # print(request.data)
                 serializer2.save()
-                return HttpResponse('Obejct successfully created', status=200)
+                return Response('Obejct successfully created', status=200)
                 return Response(status=200)
             else:
                 print("serializers2 in invalid")
                 #Because serializer2 is invalid, we delete the instance of
                 #serializer1 in the database
                 serializer1Obj.delete();
-                return HttpResponse('Customer details are Invalid', status=400)
+                return Response('Customer details are Invalid', status=400)
         else:
             # print("serializers1 in invalid")
-            return HttpResponse('User details are Invalid', status=400)
+            return Response('User details are Invalid', status=400)

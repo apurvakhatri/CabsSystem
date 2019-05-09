@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ["DEBUG"]
 
 ALLOWED_HOSTS = []
 
@@ -80,15 +80,15 @@ WSGI_APPLICATION = 'grappuscabs.wsgi.application'
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-
-
+print("DB name is")
+print(os.environ['NAME'])
 #Postgres Database
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get("DB_NAME"),
-        'USER': os.environ.get("USER"),
-        'PASSWORD': os.environ.get("PASSWORD"),
+        'NAME': os.environ['NAME'],
+        'USER': os.environ['USER'],
+        'PASSWORD': os.environ['USER'],
         'HOST': 'localhost',
         'PORT': '5432',
     }
