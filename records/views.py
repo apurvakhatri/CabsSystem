@@ -5,28 +5,27 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 import uuid
 import math
-# Create your views here.
 
+'''GET APIs'''
 class driver(APIView):
     def get(self, request):
         driverUsers=Driver.objects.all()
-        serializer2=DriverSerializer(driverUsers, many=True)
-        return Response(serializer2.data)
+        driverUsersObject=DriverSerializer(driverUsers, many=True)
+        return Response(driverUsersObject.data, status=200)
 
 
 class customer(APIView):
     def get(self, request, id=None):
-        print(id)
         if(id==None):
             customerUsers=Customer.objects.all()
-            serializer2=CustomerSerializer(customerUsers, many=True)
-            return Response(serializer2.data)
+            customerUsersObject=CustomerSerializer(customerUsers, many=True)
+            return Response(customerUsersObject.data, status=200)
         else:
-            print("In else")
             customerUsersParticular=Customer.objects.get(user_id=id)
-            serializer2=CustomerSerializer(customerUsersParticular)
-            return Response(serializer2.data)
+            customerUsersObject=CustomerSerializer(customerUsersParticular)
+            return Response(customerUsersObject.data, status=200)
 
+'''POST APIs'''
 class book(APIView):
     def deg2rad(deg):
         return deg * (math.pi/180)
@@ -40,11 +39,14 @@ class book(APIView):
         d = R * c # Distance in km
         return d
 
-    def get(self, request, id, lat, lon):
+    def post(self, request, id, lat, lon):
         lat1=float(lat)
         lon1=float(lon)
         driverUsers=Driver.objects.all()
         serializer2=DriverSerializer(driverUsers, many=True)
+        '''table1 contains the drivers which are active
+        table2 contains drivers which are within 5kms of the customer
+        table3 contains the drivers with the best rating'''
         table1=[]
         table2=[]
         table3=[]
@@ -57,6 +59,8 @@ class book(APIView):
         print(len(table1))
         print("table1 is\n")
         print(table1)
+        if len(table1)==0:
+            return HttpResponse('All drivers are busy due to high demand', status=400)
         for i in table1:
             distance=book.getDistanceFromLatLonInKm(lat1, lon1, i["latitude"], i["longitude"])
             print("Distance is & id is\n")
@@ -70,6 +74,8 @@ class book(APIView):
         print(table2)
         print("no_of_elements in table2 are:")
         print(len(table2))
+        if(len(table2)==0):
+            return HttpResponse('No driver in the region', status=400)
         lower_bound=5
         while(len(table3)==0):
             lower_bound=lower_bound-0.5
@@ -84,8 +90,6 @@ class book(APIView):
             if(distance<min_distance):
                 min_distance=distance
                 local_best=i
-        print("local_best is\n")
-        print(local_best)
         found=0
         for i in table3:
             if(i!=local_best):
@@ -97,46 +101,40 @@ class book(APIView):
                         global_best=i
         if(found==0):
             print("local_best is global_best & it is \n")
+            return Response(local_best, status=200)
             print(local_best)
         else:
             print("global_best is\n")
-            print(global_best)
+            return Response(global_best, status=200)
 
 class driverCreation(APIView):
     def post(self, request):
-        # data=request.data
         #Initialization of serializers.
         request.data["id"]=uuid.uuid4()
         serializer1 = CustomUsersSerializer(data=request.data)
-        # customerObj=CustomUsers.objects.get(username=data["username"])
-        # request.data["id"]=customerObj["id"]
         serializer2=  DriverSerializer(data=request.data)
         if serializer1.is_valid():
             serializer1Obj=serializer1.save()
-            # customerObj=CustomUsers.objects.get(username=data["username"])
-            # request.data["id"]=customerObj["id"]
             request.data["user"]=serializer1Obj.id
-            # request.data["id"]=serializer1Obj.id
-
             #request.data gets updated and is passed into the serializer2
             if serializer2.is_valid():
-                print(serializer1.validated_data)
-                print("\n")
-                print(serializer2.validated_data)
-                print("\n")
-                print("reques.data now is\n")
-                print(request.data)
+                # print(serializer1.validated_data)
+                # print("\n")
+                # print(serializer2.validated_data)
+                # print("\n")
+                # print("reques.data now is\n")
+                # print(request.data)
                 serializer2.save()
-                return Response(status=200)
+                return HttpResponse('Object successfully created', status=200)
             else:
-                print("serializers2 in invalid")
+                # print("serializers2 in invalid")
                 #Because serializer2 is invalid, we delete the instance of
                 #serializer1 in the database
                 serializer1Obj.delete();
-                return Response(serializer2.errors, status=400)
+                return HttpResponse('Driver details are Invalid', status=400)
         else:
-            print("serializers1 in invalid")
-            return Response(serializer1.errors, status=400)
+            # print("serializers1 in invalid")
+            return HttpResponse('User details are Invalid', status=400)
 
 class customerCreation(APIView):
     def post(self, request):
@@ -146,20 +144,21 @@ class customerCreation(APIView):
             serializer1Obj=serializer1.save()
             request.data["user"]=serializer1Obj.id
             if serializer2.is_valid():
-                print(serializer1.validated_data)
-                print("\n")
-                print(serializer2.validated_data)
-                print("\n")
-                print("reques.data now is\n")
-                print(request.data)
+                # print(serializer1.validated_data)
+                # print("\n")
+                # print(serializer2.validated_data)
+                # print("\n")
+                # print("reques.data now is\n")
+                # print(request.data)
                 serializer2.save()
+                return HttpResponse('Obejct successfully created', status=200)
                 return Response(status=200)
             else:
                 print("serializers2 in invalid")
                 #Because serializer2 is invalid, we delete the instance of
                 #serializer1 in the database
                 serializer1Obj.delete();
-                return Response(serializer2.errors, status=400)
+                return HttpResponse('Customer details are Invalid', status=400)
         else:
-            print("serializers1 in invalid")
-            return Response(serializer1.errors, status=400)
+            # print("serializers1 in invalid")
+            return HttpResponse('User details are Invalid', status=400)
