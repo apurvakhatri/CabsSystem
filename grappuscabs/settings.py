@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/2.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
-
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -20,7 +19,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '9h_-^lh+hw$*#m83-7^9@ynx$_hzf!lj98@cqj%!wz76&mk#z%'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -87,9 +86,9 @@ WSGI_APPLICATION = 'grappuscabs.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'grappuscabs8',
-        'USER': 'apurvakhatri',
-        'PASSWORD': '',
+        'NAME': os.environ.get("DB_NAME"),
+        'USER': os.environ.get("USER"),
+        'PASSWORD': os.environ.get("PASSWORD"),
         'HOST': 'localhost',
         'PORT': '5432',
     }
