@@ -1,4 +1,5 @@
 Post: http://localhost:8000/createDriver/
+
 {
 	"password":"pbj135", 
 	"last_login":"2019-05-06 06:00Z",
@@ -29,7 +30,7 @@ Post: http://localhost:8000/createDriver/
 
 Post: http://localhost:8000/createCustomer/
 {
-	"password":"pbj135", 
+	"password":"pbj135",/
 	"last_login":"2019-05-06 06:00Z",
 	"is_superuser":false, 
 	"username":"grappusgurgaon29", 
@@ -45,7 +46,7 @@ Post: http://localhost:8000/createCustomer/
 	"city":"Gurgaon", 
 	"address":"SS Plaza", 
 	"pincode":985873, 
-	"type‚Äù:‚ÄùC‚Äù,
+	"typeî:îCî,
 	"Upi_id":"apurva@okicici"
 }
 
