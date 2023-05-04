@@ -1,5 +1,5 @@
-Post: http://localhost:8000/createDriver/
-```
+```Post: http://localhost:8000/createDriver/
+
 {
 	"password":"pbj135", 
 	"last_login":"2019-05-06 06:00Z",
@@ -51,14 +51,19 @@ Post: http://localhost:8000/createCustomer/
 }
 ```
 Get: http://localhost:8000/driver/
+
 Return: All driver objects
 
 Get: http://localhost:8000/customer/
+
 Return: All customer objects
 
 Get: http://localhost:8000/customer/{insert id here}/
+
 Return: Details of the particular customer
 
 Get: http://localhost:8000/book/{insert id here}/{insert latitude}/{insert longitude}/
+
 Examples: http://localhost:8000/book/899c1a51-b7e8-4892-bbee-bc285278e2f9/28.552989/77.122044/
+
 Return: driver object
