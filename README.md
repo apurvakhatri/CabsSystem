@@ -1,4 +1,5 @@
 Post: http://localhost:8000/createDriver/
+```
 {
 	"password":"pbj135", 
 	"last_login":"2019-05-06 06:00Z",
@@ -48,7 +49,7 @@ Post: http://localhost:8000/createCustomer/
 	"type”:”C”,
 	"Upi_id":"apurva@okicici"
 }
-
+```
 Get: http://localhost:8000/driver/
 Return: All driver objects
 
